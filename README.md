@@ -1,2 +1,2 @@
 # Shichao-s-Lab
-small tests big performance.
+Small tests big performance. All experiment are done on Ubuntu 20.04+ platform.
