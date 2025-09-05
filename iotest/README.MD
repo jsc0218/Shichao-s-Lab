@@ -1,4 +1,4 @@
-## Latency vs Batch Size in Socket Writing
+## Async vs Sync File Write Benchmark
 
 ![Benchmark Results](io.png)
 
