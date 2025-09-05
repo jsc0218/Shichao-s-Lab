@@ -82,7 +82,7 @@ static void server_thread_fn(uint16_t port, int accepts) {
 static int connect_client(uint16_t port) {
     int fd = ::socket(AF_INET, SOCK_STREAM, 0);
     if (fd < 0) { perror("socket"); std::exit(1); }
-    int one = 0;
+    int one = 1;
     ::setsockopt(fd, IPPROTO_TCP, TCP_NODELAY, &one, sizeof(one)); // disable Nagle
 
     sockaddr_in addr{};
