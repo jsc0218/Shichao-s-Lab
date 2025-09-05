@@ -1,0 +1,25 @@
+# Compiled object files
+*.o
+*.obj
+
+# Static & dynamic libs
+*.a
+*.so
+*.dll
+*.dylib
+*.lib
+
+# Executables
+*.exe
+*.out
+*.app
+*.bin
+
+# Rust / Go binaries
+target/
+*.rlib
+
+# Other build artifacts
+*.class
+*.pyc
+*.pyo
