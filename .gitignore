@@ -18,6 +18,7 @@
 # Rust / Go binaries
 target/
 *.rlib
+*.lock
 
 # Other build artifacts
 *.class
