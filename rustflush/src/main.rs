@@ -5,13 +5,13 @@ use std::error::Error;
 
 #[tokio::main]
 async fn main() -> Result<(), Box<dyn Error>> {
-    //single_writer().await?;
+    single_writer(1000).await?;
     multi_writer().await?;
     Ok(())
 }
 
-async fn single_writer() -> Result<(), Box<dyn Error>> {
-    println!("Running single writer...");
+async fn single_writer(n: usize) -> Result<(), Box<dyn Error>> {
+    println!("Running single writer with {n} bytes per write...");
     let filepath = "settings.log";
 
     // Delete the file if it exists
@@ -20,8 +20,9 @@ async fn single_writer() -> Result<(), Box<dyn Error>> {
     }
 
     let mut expected_len = 0u64;
+    let payload = vec![b'x'; n]; // write 'n' copies of 'x'
 
-    for i in 0..100_00 {
+    for i in 0..10_000 {
         // Open file in append mode
         let mut file = OpenOptions::new()
             .append(true)
@@ -29,28 +30,26 @@ async fn single_writer() -> Result<(), Box<dyn Error>> {
             .open(filepath)
             .await?;
 
-        // Write 4 bytes
-        file.write_all(b"test").await?;
-        //file.flush().await?;
+        // Write N bytes
+        file.write_all(&payload).await?;
         file.sync_data().await?;
 
         // Check file length
         let metadata = tokio::fs::metadata(filepath).await?;
         let file_len = metadata.len();
 
-        // Assert file length increased by 4 bytes
-        expected_len += 4;
+        expected_len += n as u64;
         assert_eq!(file_len, expected_len, "File length mismatch at run {i}");
 
-        // Read last 4 bytes to verify write persisted
+        // Read last N bytes
         let mut f = tokio::fs::File::open(filepath).await?;
-        f.seek(tokio::io::SeekFrom::Start(file_len - 4)).await?;
-        let mut last4 = [0u8; 4];
-        f.read_exact(&mut last4).await?;
-        assert_eq!(&last4, b"test", "Last 4 bytes mismatch at run {i}");
+        f.seek(tokio::io::SeekFrom::Start(file_len - n as u64)).await?;
+        let mut last_n = vec![0u8; n];
+        f.read_exact(&mut last_n).await?;
+        assert_eq!(last_n, payload, "Last {n} bytes mismatch at run {i}");
     }
 
-    println!("Finished 100,000 append + sync_data() cycles successfully.");
+    println!("Finished 10,000 append + sync_data() cycles successfully.");
     Ok(())
 }
 
