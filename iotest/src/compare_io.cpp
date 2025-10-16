@@ -13,9 +13,9 @@ using namespace std;
 constexpr size_t BLOCK_SIZE = 4096;
 constexpr size_t FILE_SIZE  = 512 * 1024 * 1024; // 512 MB
 
-constexpr const char* FILE_BUFFERED  = "test_buffered_io.dat";
+constexpr const char* FILE_OS_BUFFERED  = "test_os_buffered_io.dat";
 constexpr const char* FILE_DIRECT    = "test_direct_io.dat";
-constexpr const char* FILE_USERCACHE = "test_usercache_io.dat";
+constexpr const char* FILE_USER_BUFFERED = "test_user_buffered_io.dat";
 
 // Allocate aligned buffer (required for O_DIRECT)
 void* aligned_alloc_block(size_t size) {
@@ -28,7 +28,7 @@ void* aligned_alloc_block(size_t size) {
     return ptr;
 }
 
-double write_buffered(const char* filename, void* buf, size_t total_size) {
+double write_os_buffered(const char* filename, void* buf, size_t total_size) {
     int fd = open(filename, O_WRONLY | O_CREAT | O_TRUNC, 0666);
     if (fd < 0) { perror("open (buffered)"); exit(1); }
 
@@ -68,7 +68,7 @@ double write_direct(const char* filename, void* buf, size_t total_size) {
     return chrono::duration<double>(end - start).count();
 }
 
-double write_user_cache_then_flush(const char* filename, void* buf, size_t total_size) {
+double write_user_buffered(const char* filename, void* buf, size_t total_size) {
     // Simulate user-space cache: accumulate in RAM first
     char* user_cache = (char*)malloc(total_size);
     if (!user_cache) { cerr << "malloc failed\n"; exit(1); }
@@ -97,19 +97,19 @@ double write_user_cache_then_flush(const char* filename, void* buf, size_t total
 }
 
 int main() {
-    cout << "Comparing Buffered, Direct, and User-space Cached I/O (" 
+    cout << "Comparing OS Buffered, Direct, and User Buffered I/O (" 
          << FILE_SIZE / (1024*1024) << " MB)\n";
 
     void* buf = aligned_alloc_block(BLOCK_SIZE);
 
-    double t1 = write_buffered(FILE_BUFFERED, buf, FILE_SIZE);
-    cout << "Buffered I/O:          " << t1 << " sec\n";
+    double t1 = write_os_buffered(FILE_OS_BUFFERED, buf, FILE_SIZE);
+    cout << "OS Buffered I/O:          " << t1 << " sec\n";
 
     double t2 = write_direct(FILE_DIRECT, buf, FILE_SIZE);
     cout << "Direct I/O:            " << t2 << " sec\n";
 
-    double t3 = write_user_cache_then_flush(FILE_USERCACHE, buf, FILE_SIZE);
-    cout << "User-space cache I/O:  " << t3 << " sec\n";
+    double t3 = write_user_buffered(FILE_USER_BUFFERED, buf, FILE_SIZE);
+    cout << "User Buffered I/O:  " << t3 << " sec\n";
 
     free(buf);
     return 0;
