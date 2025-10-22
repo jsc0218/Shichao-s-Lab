@@ -1,6 +1,6 @@
 ## futex vs pthread vs semaphore Benchmark
 
-![Benchmark Results](Code_Generated_Image.png)
+![Benchmark Results](futex_vs_pthread_semaphore_lock.png)
 
 Comparing pthread_mutex vs futex-based mutex (10000000 iterations)
 pthread_mutex: 0.553008 sec, counter=20000000
