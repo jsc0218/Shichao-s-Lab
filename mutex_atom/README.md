@@ -1,6 +1,6 @@
 ## Mutex vs Atomic Benchmark
 
-![Benchmark Results](mutext_vs_atomic.png)
+![Benchmark Results](mutex_vs_atomic.png)
 
 
 Single thread case:
