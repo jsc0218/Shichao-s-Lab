@@ -1,0 +1,32 @@
+[global]
+ioengine=psync
+size=2G
+bs=8k
+numjobs=1
+iodepth=1
+group_reporting=1
+stonewall
+filename=/mnt/raid0/testfile
+
+# Test Mode 1: Buffered I/O + fsync
+direct=0
+fsync=1
+
+[seq_write_buf_fsync]
+rw=write
+
+# Test Mode 2: Direct I/O (bypasses cache, no fsync needed)
+direct=1
+fsync=0
+
+[seq_write_direct]
+rw=write
+
+[seq_read_direct]
+rw=read
+
+[rand_write_direct]
+rw=randwrite
+
+[rand_read_direct]
+rw=randread
