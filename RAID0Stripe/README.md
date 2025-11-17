@@ -82,7 +82,7 @@ no raid0 perf:
 | 512K      | RW     | 850       | 1250        | 1100        |
 | 512K      | RR     | 450       | 950         | 900         |
 
-![Page 1M](1024.png)
+![Page 1M](1M.png)
 | Page Size | Metric | 8K Stripe | 128K Stripe | 512K Stripe |
 |-----------|--------|-----------|-------------|-------------|
 | 1M        | SWBF   | 2500      | 4900        | 4200        |
