@@ -1,3 +1,5 @@
+## Test raid0 stripe size perf
+
 SWBF: seq_write_buf_fsync, to mimic wal writing
 
 Following direct options bypass os cache to test perf without os cache involvement, and no fsync, to mimic other db operations.
