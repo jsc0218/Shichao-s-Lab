@@ -1,4 +1,6 @@
-SWBF: seq_write_buf_fsync
+SWBF: seq_write_buf_fsync, to mimic wal writing
+
+Following direct options bypass os cache to test perf without os cache involvement, and no fsync, to mimic other db operations.
 
 SW: seq_write_direct
 
@@ -10,7 +12,7 @@ RR: rand_read_direct
 
 unit: MB/s
 
-no raid0 perf:
+no raid0 perf for reference:
 | Page Size | Metric | Throughput|
 |-----------|--------|-----------|
 | 8K        | SWBF   | 500       |
