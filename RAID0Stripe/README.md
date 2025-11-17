@@ -10,6 +10,15 @@ RR: rand_read_direct
 
 unit: MB/s
 
+no raid0 perf:
+| Page Size | Metric | Throughput|
+|-----------|--------|-----------|
+| 8K        | SWBF   | 500       |
+| 8K        | SW     | 360       |
+| 8K        | SR     | 1000      |
+| 8K        | RW     | 340       |
+| 8K        | RR     | 55        |
+
 ![Page 8K](8.png)
 | Page Size | Metric | 8K Stripe | 128K Stripe | 512K Stripe |
 |-----------|--------|-----------|-------------|-------------|
